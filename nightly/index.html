@@ -32,7 +32,7 @@
         For the latest supported releases please visit <a href="https://aws.amazon.com/corretto/">Amazon Corretto</a> for download and installation instructions.
       </p>
       <div class="input-group date" id="datepicker" style="justify-content: center;"><p>Showing builds for
-        <input type="text"  size="12">
+        <input name="date" type="text"  size="12">
         <span class="input-group-addon"><span class="bi bi-calendar3"></span></span>
         </p>
     </div>
@@ -40,14 +40,17 @@
     <div class="container">
       <p>
       <div class="row">
-        <div class="col">
-          <select id="versionSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Versions</option></select>
+        <div class="col text-center">
+          <label for="versionSelect">Version</label>
+          <select id="versionSelect" name="versionSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Versions</option></select>
         </div>
-        <div class="col">
-          <select id="platformSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Platforms</option></select>
+        <div class="col text-center">
+          <label for="platformSelect">Platform</label>
+          <select id="platformSelect" name="platformSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Platforms</option></select>
         </div>
-        <div class="col">
-          <select id="architectureSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Architectures</option></select>
+        <div class="col text-center">
+          <label for="architectureSelect">Architecture</label>
+          <select id="architectureSelect" name="architectureSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Architectures</option></select>
         </div>
       </div>
       </p>
