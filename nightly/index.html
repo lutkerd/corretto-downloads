@@ -171,19 +171,19 @@
                       const mv = version.slice(8)
 
                       $html += `<tr><td>${version}</td>`;
-                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/tree/${branch}" target="_blank" tabindex="0">${branch}</a></td>`;
-                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/commit/${commit}" target="_blank" tabindex="0">${commit.substring(0, 12)}</a></td>`;
+                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/tree/${branch}" target="_blank" rel="noopener noreferrer" tabindex="0">${branch}</a></td>`;
+                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/commit/${commit}" target="_blank" rel="noopener noreferrer" tabindex="0">${commit.substring(0, 12)}</a></td>`;
                       $html += `<td>${debug_level}</td>`;
                       $html += `<td>${platform}</td>`;
                       $html += `<td>${arch}</td>`;
 
                       artifact = architecture.build.artifacts[i];
-                      $html += `<td><span><a class="badge rounded-pill" style="color:#FFFFFF;background-color:#046B99" href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" tabindex="0">${artifact.type}</a></span>`;
+                      $html += `<td><span><a class="badge rounded-pill" style="color:#FFFFFF;background-color:#046B99" href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" rel="noopener noreferrer" tabindex="0">${artifact.type}</a></span>`;
                       $html += '</td>'
 
                       $html += '<td>'
                       for (hash in artifact.hashes) {
-                        $html += `<span> <a class="badge rounded-pill" style="color:#000000;background-color:#B3EFFF" href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" tabindex="0">${hash}</a></span>`;
+                        $html += `<span> <a class="badge rounded-pill" style="color:#000000;background-color:#B3EFFF" href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" rel="noopener noreferrer" tabindex="0">${hash}</a></span>`;
                       }
                       $html += '</td>'
                     }
