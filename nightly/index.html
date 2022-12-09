@@ -91,11 +91,32 @@
         buildPage(jsonText, true);
       };
 
-      // Compare function for getting order Corretto versions.
-      // Strips off the "Corretto" from CorrettoXX so 8 is 1st.
+      function getLTSFirstSortOrder(correttoVersion) {
+        // Creates a mapping of the versions where the latest LTS should be 1st followed by older LTS versions
+        // and then feature release and finally CorrettoJdk
+        ver = correttoVersion == "CorrettoJdk" ? Number.MAX_VALUE : Number(correttoVersion.slice(8));
+        const latestLTS=17
+        if (ver <= latestLTS) {
+          return latestLTS - ver;
+        } else {
+          return ver;
+        }
+
+      }
+
+      // Compare function for getting order Corretto versions favoring latest LTS
       function correttoCompare(a, b) {
-        a_ver = (a == "CorrettoJdk" ? a_ver=99 : Number(a.slice(8)));
-        b_ver = (b == "CorrettoJdk" ? b_ver=99 : Number(b.slice(8)));
+        a_ver = getLTSFirstSortOrder(a)
+        b_ver = getLTSFirstSortOrder(b);
+        if(a_ver < b_ver) return -1;
+        if(a_ver > b_ver) return 1;
+        return 0;
+      };
+
+      // Compare function for getting order Corretto versions favoring oldest version 1st
+      function correttoNaturalCompare(a, b) {
+        a_ver = a == "CorrettoJdk" ? Number.MAX_VALUE : Number(a.slice(8));
+        b_ver = b == "CorrettoJdk" ? Number.MAX_VALUE : Number(b.slice(8));
         if(a_ver < b_ver) return -1;
         if(a_ver > b_ver) return 1;
         return 0;
@@ -205,7 +226,7 @@
 
         if (!is_rebuild) {
           select_version.options.length = 1;
-          known_versions.forEach((version) => select_version.add(new Option(version, version)));
+          Array.from(known_versions).sort(correttoNaturalCompare).forEach((version) => select_version.add(new Option(version, version)));
           select_platform.options.length = 1;
           known_platforms.forEach((platform) => select_platform.add(new Option(platform, platform)));
           select_architecture.options.length = 1;
