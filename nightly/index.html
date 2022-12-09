@@ -18,8 +18,7 @@
             left: 0;
         }
     </style>
-
-    <title>Amazon Corretto nightly build downloads</title>
+      <title>Amazon Corretto nightly build downloads</title>
   </head>
   <body>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -30,7 +29,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" integrity="sha512-Oy+sz5W86PK0ZIkawrG0iv7XwWhYecM3exvUtMKNJMekGFJtVAhibhRPTpmyTj8+lJCkmWfnpxKgT2OopquBHA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha512-rxThY3LYIfYsVCWPCW9dB0k+e3RZB39f23ylUYTEuZMDrN/vRqLdaCBo/FbvVT6uC2r0ObfPzotsfKF9Qc5W5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <div class="container">
+      <header>
       <h1 class="text-center">Amazon Corretto nightly build downloads</h1>
+    </header>
+    <main>
       <p>
         Amazon Corretto provides nightly builds for evaluation and testing purposes. Availability is not guaranteed, and the schedule may vary. These builds may contain bugs or breaking changes in functionality and are not supported in production environments.
         For the latest supported releases please visit <a href="https://aws.amazon.com/corretto/">Amazon Corretto</a> for download and installation instructions.
@@ -81,6 +83,7 @@
       </tbody>
     </table>
     </div>
+    </main>
     <script type="text/javascript">
 
       function onSelectChange() {
@@ -215,7 +218,7 @@
       loadJSON(url);
     </script>
     <hr class="solid">
-
+    <aside>
     <div tabindex="0">
       <h3>Version and Branch Descriptions</h3>
       <h4>Versions</h4>
@@ -247,5 +250,6 @@
     <div tabindex="0">
       <br><h4>Disclaimer</h4> Links are provided for testing/evaluation purposes only and should not be used for production. They contain the latest development code which may contain bugs.
     </div>
+  </aside>
   </body>
 </html>
