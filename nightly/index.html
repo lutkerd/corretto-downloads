@@ -133,25 +133,30 @@
         const known_architectures = new Set()
         $html = '';
         for (const version of Object.keys(data.versions).sort(correttoCompare)) {
-          // Index 0 is the "All Versions entry", when it is selected no filtering is done.
-          if (select_version.selectedIndex != 0 && select_version.options[select_version.selectedIndex].value != version) {
-            continue;
-          }
+
           known_versions.add(version);
           for (branch in data.versions[version].branches) {
             for (commit in data.versions[version].branches[branch].commits) {
               for (debug_level in data.versions[version].branches[branch].commits[commit].debug_levels) {
                 for (platform in data.versions[version].branches[branch].commits[commit].debug_levels[debug_level].platforms) {
-                  if (select_platform.selectedIndex != 0 && select_platform.options[select_platform.selectedIndex].value != platform) {
-                      continue;
-                  }
                   known_platforms.add(platform);
                   for (arch in data.versions[version].branches[branch].commits[commit].debug_levels[debug_level].platforms[platform].architectures) {
+                    known_architectures.add(arch);
+
+                    // Filtering and skipping has to happen at this level so that we properly fill the drop downs.
+
+                    // Index 0 is the "All Versions entry", when it is selected no filtering is done.
+                    if (select_version.selectedIndex != 0 && select_version.options[select_version.selectedIndex].value != version) {
+                      continue;
+                    }
+                    if (select_platform.selectedIndex != 0 && select_platform.options[select_platform.selectedIndex].value != platform) {
+                      continue;
+                    }
                     architecture = data.versions[version].branches[branch].commits[commit].debug_levels[debug_level].platforms[platform].architectures[arch];
                     if (select_architecture.selectedIndex != 0 && select_architecture.options[select_architecture.selectedIndex].value != arch) {
                       continue;
                     }
-                    known_architectures.add(arch);
+
                     for (i in architecture.build.artifacts) {
                       const mv = version.slice(8)
 
