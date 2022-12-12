@@ -191,19 +191,19 @@
                       const mv = version.slice(8)
 
                       $html += `<tr><td>${version}</td>`;
-                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/tree/${branch}" target="_blank" rel="noopener noreferrer" tabindex="0">${branch}</a></td>`;
-                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/commit/${commit}" target="_blank" rel="noopener noreferrer" tabindex="0">${commit.substring(0, 12)}</a></td>`;
+                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/tree/${branch}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${version} ${branch} branch source code">${branch}</a></td>`;
+                      $html += `<td><a href="https://github.com/corretto/corretto-${mv}/commit/${commit}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${version} commit source code">${commit.substring(0, 12)}</a></td>`;
                       $html += `<td>${debug_level}</td>`;
                       $html += `<td>${platform}</td>`;
                       $html += `<td>${arch}</td>`;
 
                       artifact = architecture.build.artifacts[i];
-                      $html += `<td><span><a class="badge rounded-pill" style="color:#FFFFFF;background-color:#046B99" href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" rel="noopener noreferrer" tabindex="0">${artifact.type}</a></span>`;
+                      $html += `<td><span><a class="badge rounded-pill" style="color:#FFFFFF;background-color:#046B99" href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${artifact.filename}">${artifact.type}</a></span>`;
                       $html += '</td>'
 
                       $html += '<td>'
                       for (hash in artifact.hashes) {
-                        $html += `<span> <a class="badge rounded-pill" style="color:#000000;background-color:#B3EFFF" href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" rel="noopener noreferrer" tabindex="0">${hash}</a></span>`;
+                        $html += `<span> <a class="badge rounded-pill" style="color:#000000;background-color:#B3EFFF" href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" rel="noopener noreferrer" tabindex="0"  aria-label="${artifact.filename} ${hash} hash">${hash}</a></span>`;
                       }
                       $html += '</td>'
                     }
@@ -213,7 +213,7 @@
                     for (i in architecture.build.test_results) {
                       test_result = architecture.build.test_results[i];
 
-                      $html += `<span> <a class="badge rounded-pill" style="color:#FFFFFF;background-color:#1C304A" href="${corretto_domain}/${artifact.location}/${test_result}" tabindex="0">${test_result.split('/')[1]}</a></span>`;
+                      $html += `<span> <a class="badge rounded-pill" style="color:#FFFFFF;background-color:#1C304A" href="${corretto_domain}/${artifact.location}/${test_result}" tabindex="0" aria-label="${artifact.filename} test result for ${test_result.split('/')[1]}">${test_result.split('/')[1]}</a></span>`;
                     }
                     $html += '</td>';
                   }
@@ -260,7 +260,7 @@
     </div>
 
     <div tabindex="0">
-      <h4>Notes</h4>
+      <h3>Notes</h3>
       <ul>
       <li>The nightly builds have not passed the Java Technology Compatibility Kit (TCK) tests, only Amazon Corretto official releases are certified.</li>
       <li>If you do not see any builds for a date, particular OS or architecture for a given date, the build may have been disabled, cancelled or failed. Builds are provided as a best effort.</li>
@@ -269,7 +269,7 @@
     </div>
 
     <div tabindex="0">
-      <br><h4>Disclaimer</h4> Links are provided for testing/evaluation purposes only and should not be used for production. They contain the latest development code which may contain bugs.
+      <br><h3>Disclaimer</h3> Links are provided for testing/evaluation purposes only and should not be used for production. They contain the latest development code which may contain bugs.
     </div>
   </aside>
   </body>
