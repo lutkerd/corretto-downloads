@@ -52,6 +52,14 @@
           <select id="versionSelect" name="versionSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Versions</option></select>
         </div>
         <div class="col text-center">
+          <label for="branchSelect">Branch</label>
+          <select id="branchSelect" name="branchSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Branches</option></select>
+        </div>
+        <div class="col text-center">
+          <label for="debugSelect">Debug Level</label>
+          <select id="debugSelect" name="debugSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Debug Levels</option></select>
+        </div>
+        <div class="col text-center">
           <label for="platformSelect">Platform</label>
           <select id="platformSelect" name="platformSelect" class="form-select required" onchange="onSelectChange()"> <option selected>All Platforms</option></select>
         </div>
@@ -64,16 +72,16 @@
     </div>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <div class="container-fluid table-responsive overflow-auto" style="background-color:white;color: black; max-height: 90vh;" tabindex="0">
+    <div class="container-fluid table-responsive overflow-auto" style="background-color:white;color: black;" tabindex="0">
     <table class="table table-bordered table-striped table-fixed" stype="border-collapse: separate;">
       <thead>
         <tr class="header">
           <th class="header" scope="col">Version</th>
           <th class="header" scope="col">Branch</th>
-          <th class="header" scope="col">Commit</th>
-          <th class="header" scope="col">Debug Level</th>
+          <th class="header" scope="col">Git Commit</th>
           <th class="header" scope="col">Platform</th>
           <th class="header" scope="col">Architecture</th>
+          <th class="header" scope="col">Debug Level</th>
           <th class="header" scope="col">Artifacts</th>
           <th class="header" scope="col">Hashes / Signatures</th>
           <th class="header" scope="col">Test Results</th>
@@ -155,19 +163,25 @@
         $("#datepicker").datepicker("update", data.date);
 
         const select_version = document.getElementById("versionSelect");
+        const select_branch = document.getElementById("branchSelect");
+        const select_debug = document.getElementById("debugSelect");
         const select_platform = document.getElementById("platformSelect");
         const select_architecture = document.getElementById("architectureSelect");
 
         const known_versions = new Set()
+        const known_branches = new Set()
+        const known_debug_levels = new Set()
         const known_platforms = new Set()
         const known_architectures = new Set()
         $html = '';
-        for (const version of Object.keys(data.versions).sort(correttoCompare)) {
+        for (const version of Object.keys(data.versions).sort(correttoNaturalCompare)) {
 
           known_versions.add(version);
           for (branch in data.versions[version].branches) {
+            known_branches.add(branch)
             for (commit in data.versions[version].branches[branch].commits) {
               for (debug_level in data.versions[version].branches[branch].commits[commit].debug_levels) {
+                known_debug_levels.add(debug_level)
                 for (platform in data.versions[version].branches[branch].commits[commit].debug_levels[debug_level].platforms) {
                   known_platforms.add(platform);
                   for (arch in data.versions[version].branches[branch].commits[commit].debug_levels[debug_level].platforms[platform].architectures) {
@@ -177,6 +191,12 @@
 
                     // Index 0 is the "All Versions entry", when it is selected no filtering is done.
                     if (select_version.selectedIndex != 0 && select_version.options[select_version.selectedIndex].value != version) {
+                      continue;
+                    }
+                    if (select_branch.selectedIndex != 0 && select_branch.options[select_branch.selectedIndex].value != branch) {
+                      continue;
+                    }
+                    if (select_debug.selectedIndex != 0 && select_debug.options[select_debug.selectedIndex].value != debug_level) {
                       continue;
                     }
                     if (select_platform.selectedIndex != 0 && select_platform.options[select_platform.selectedIndex].value != platform) {
@@ -193,29 +213,51 @@
                       $html += `<tr><td>${version}</td>`;
                       $html += `<td><a href="https://github.com/corretto/corretto-${mv}/tree/${branch}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${version} ${branch} branch source code">${branch}</a></td>`;
                       $html += `<td><a href="https://github.com/corretto/corretto-${mv}/commit/${commit}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${version} commit source code">${commit.substring(0, 12)}</a></td>`;
-                      $html += `<td>${debug_level}</td>`;
                       $html += `<td>${platform}</td>`;
                       $html += `<td>${arch}</td>`;
+                      $html += `<td>${debug_level}</td>`;
 
                       artifact = architecture.build.artifacts[i];
-                      $html += `<td><span><a class="badge rounded-pill" style="color:#FFFFFF;background-color:#046B99" href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${artifact.filename}">${artifact.type}</a></span>`;
+                      $html += `<td><a href="${corretto_domain}/${artifact.location}/${artifact.filename}" target="_blank" rel="noopener noreferrer" tabindex="0" aria-label="${artifact.filename}">${artifact.type}</a>`;
                       $html += '</td>'
 
                       $html += '<td>'
                       for (hash in artifact.hashes) {
-                        $html += `<span> <a class="badge rounded-pill" style="color:#000000;background-color:#B3EFFF" href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" rel="noopener noreferrer" tabindex="0"  aria-label="${artifact.filename} ${hash} hash">${hash}</a></span>`;
+                        if (hash != "md5" ) {
+                          $html += `<span> <a href="${corretto_domain}/${artifact.location}/${artifact.hashes[hash]}" target="_blank" rel="noopener noreferrer" tabindex="0"  aria-label="${artifact.filename} ${hash} hash">${hash}</a></span>`;
+                        }
                       }
                       $html += '</td>'
                     }
                     $html += '<td>'
 
-                    $html += '<div class="col">';
-                    for (i in architecture.build.test_results) {
-                      test_result = architecture.build.test_results[i];
+                    if (architecture.build.test_results.length == 0) {
+                      $html += 'No results available'
+                    } else {
+                      $html += '<div class="col">';
+                      $html += `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#${version}${branch}${commit}${platform}${arch}${debug_level}">View Test Results: ${architecture.build.test_results.length}</button>`
 
-                      $html += `<span> <a class="badge rounded-pill" style="color:#FFFFFF;background-color:#1C304A" href="${corretto_domain}/${artifact.location}/${test_result}" tabindex="0" aria-label="${artifact.filename} test result for ${test_result.split('/')[1]}">${test_result.split('/')[1]}</a></span>`;
+                      $html += `<div class="modal fade" id="${version}${branch}${commit}${platform}${arch}${debug_level}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`
+                      $html += '<div class="modal-dialog">'
+                      $html += '<div class="modal-content">'
+                      $html += '<div class="modal-header">'
+                      $html += '<h1 class="modal-title fs-5" id="exampleModalLabel">Test Results</h1>'
+                      $html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+                      $html += '</div>'
+                      $html += '<div class="modal-body">'
+                      $html += '<ul>'
+
+                      for (i in architecture.build.test_results) {
+                        test_result = architecture.build.test_results[i];
+                        $html += `<li><span> <a href="${corretto_domain}/${artifact.location}/${test_result}" tabindex="0" aria-label="${artifact.filename} test result for ${test_result.split('/')[1]}">${test_result.split('/')[1]}</a></span></li>`;
+                      }
+                      $html += '</ul>'
+                      $html += '</div>'
+                      $html += '</div>'
+                      $html += '</div>'
+                      $html += '</div>'
+                      $html += '</td>';
                     }
-                    $html += '</td>';
                   }
                 }
               }
@@ -226,6 +268,10 @@
         if (!is_rebuild) {
           select_version.options.length = 1;
           Array.from(known_versions).sort(correttoNaturalCompare).forEach((version) => select_version.add(new Option(version, version)));
+          select_branch.options.length = 1;
+          known_branches.forEach((branch) => select_branch.add(new Option(branch, branch)))
+          select_debug.options.length = 1;
+          known_debug_levels.forEach((debug_level) => select_debug.add(new Option(debug_level, debug_level)));
           select_platform.options.length = 1;
           known_platforms.forEach((platform) => select_platform.add(new Option(platform, platform)));
           select_architecture.options.length = 1;
