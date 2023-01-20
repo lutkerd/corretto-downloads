@@ -1,0 +1,85 @@
+{
+  "name": "@amzn/corretto-download",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git.amazon.com/pkg/CorrettoDownload"
+  },
+  "description": "## run the project  bb start",
+  "author": {
+    "name": "weifangw"
+  },
+  "dependencies": {
+    "@cloudscape-design/components": "^3.0.162",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.11",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
+    "axios": "^1.2.2",
+    "date-fns": "^2.29.3",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.6.1",
+    "react-scripts": "5.0.1",
+    "sass": "^1.57.1",
+    "typescript": "^4.9.4",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "jest --coverage --maxWorkers=50%",
+    "eject": "react-scripts eject",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "files": [],
+  "npm-pretty-much": {
+    "runTest": "never",
+    "ciBuild": "always"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "jest-transform-stub": "^2.0.0",
+    "ts-jest": "^29.0.5"
+  },
+  "readme": "# CorrettoDownload - `@amzn/corretto-download`\n\n## run the project \nbb start\n\n\nThe NPM package name should always start with `@amzn/` to cleanly separate from\npublic packages, avoid accidental publish to public repository, and allow\npublishing to CodeArtifact.\n\nThe package is built with\n[NpmPrettyMuch](https://w.amazon.com/bin/view/NpmPrettyMuch/GettingStarted/v1)\nand allows using internal (first-party) dependencies as well as external\nnpmjs.com packages.\n\nAdd registry dependencies with `brazil-build install` exactly the same as [`npm\ninstall`](https://docs.npmjs.com/cli-commands/install.html). You can check\nlatest state of external dependencies on https://npmpm.corp.amazon.com/\nImportant: always use `brazil-build` wrapper for npm, using `npm` directly will\nuse the public registry instead of the internal registry.\n\nAdd brazil packages that build npm packages to the `dependencies` or\n`test-dependencies` sections in the Config file,  then add a `*` dependency or\ndevDependencies to package.json. You should match `test-dependencies` with\n`devDependencies`, and normal `dependencies` with `dependencies`.\n\nNpmPrettyMuch 1.0 has special behavior for running tests during build. The\noption `\"runTest\": \"never\"` disabled this and instead tests are wired up in\n`prepublishOnly`. NpmPrettyMuch will invoke `prepublishOnly` and everything can\nconfigured in there the [same as with external\nnpm](https://docs.npmjs.com/misc/scripts). Files to published are configured\nusing [`files` in\n`package.json`](https://docs.npmjs.com/configuring-npm/package-json.html#files).\nThe option `ciBuild` uses [`npm\nci`](https://docs.npmjs.com/cli-commands/ci.html) instead of `npm install` and\nresults in faster install times and guarantees all of your dependencies are\nlocked appropriately.\n",
+  "readmeFilename": "README.md",
+  "_id": "@amzn/corretto-download@0.1.0",
+  "_nodeVersion": "14.21.2",
+  "_npmVersion": "8.19.3",
+  "dist": {
+    "integrity": "sha512-R1B8N1OfhNH2xLUOIhcCaKJ8RhzrCriNmbArFtGR5EHB/BwjrAP9eZZ+6iCg74EBfW9cp+3XbfRsmpqZGb5C/w==",
+    "shasum": "f5a97e9cc25a8dc29d350c4076caddbc2249efec",
+    "tarball": "brazilNpm:%40amzn%2Fcorretto-download/0.1.0.tgz"
+  },
+  "brazil": {
+    "name": "CorrettoDownload",
+    "version": "1.0.7.0"
+  },
+  "_hasShrinkwrap": false
+}
